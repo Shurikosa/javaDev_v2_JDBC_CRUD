@@ -11,7 +11,6 @@ import java.util.List;
 
 public class OsbbCrud implements Closeable{
     private static final Logger logger = Logger.getLogger(OsbbCrud.class);
-
     private static final String sqlMembersWithoutCarAccessQuery = "SELECT \n" +
             "om.first_name, \n" +
             "om.second_name, \n" +
@@ -25,18 +24,8 @@ public class OsbbCrud implements Closeable{
             "JOIN Buildings b ON f.building_id = b.building_id\n" +
             "WHERE res.car_access = FALSE";
     private Connection connection = null;
-    private void flywayMigration(){
-        logger.debug("Flyway migration execute");
-
-        Flyway.configure()
-                .dataSource(jdbcUrl, username, password)
-                .locations("classpath:flyway/scripts")
-                .load()
-                .migrate();
-    }
     public OsbbCrud startConnection() throws SQLException{
         logger.info("Crud initialized");
-        flywayMigration();
         connection = DriverManager.getConnection(jdbcUrl, username, password);
         return this;
     }
